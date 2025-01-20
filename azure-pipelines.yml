@@ -1,0 +1,59 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  location: 'East US'
+  resource_group_name: 'demo-rg'
+  storage_account_name: 'demostorageacct'
+  container_name: 'static-content'
+
+stages:
+# Validación de Terraform
+- stage: Validate
+  displayName: "Validación de Terraform"
+  jobs:
+  - job: Validate
+    displayName: "Inicializar y Validar Terraform"
+    steps:
+    - task: TerraformInstaller@0
+      displayName: "Instalar Terraform"
+      inputs:
+        terraformVersion: 'latest'
+    - script: |
+        terraform init
+        terraform validate
+      displayName: "Inicializar y Validar Terraform"
+
+# Aplicación de Terraform
+- stage: Deploy
+  displayName: "Desplegar Infraestructura"
+  dependsOn: Validate
+  jobs:
+  - job: Deploy
+    displayName: "Planificar y Aplicar Terraform"
+    steps:
+    - script: |
+        terraform plan -out=tfplan
+        terraform apply -auto-approve tfplan
+      displayName: "Planificar y Aplicar Infraestructura"
+
+# Empaquetado de Artefactos
+- stage: Package
+  displayName: "Empaquetar y Subir Artefactos"
+  dependsOn: Deploy
+  jobs:
+  - job: Package
+    displayName: "Empaquetar Aplicación"
+    steps:
+    - script: |
+        zip -r app.zip ./index.html
+        az storage blob upload \
+          --account-name $(storage_account_name) \
+          --container-name $(container_name) \
+          --file app.zip \
+          --name app.zip \
+          --auth-mode key
+      displayName: "Empaquetar y Subir Artefacto"
