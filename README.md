@@ -4,7 +4,6 @@
 Este proyecto implementa una infraestructura básica en Azure utilizando Terraform y un pipeline CI/CD en Azure DevOps. El pipeline automatiza la creación de un grupo de recursos, una cuenta de almacenamiento, un contenedor de Blob Storage, y la carga de un archivo estático.
 
 ## Estructura del Proyecto
-## Estructura del Proyecto
 
 ```
 prueba-affi/
