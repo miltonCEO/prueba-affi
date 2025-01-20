@@ -1,0 +1,14 @@
+Cambios realizados
+1. Centralización de lógica repetitiva:
+    - Se consolidaron las funciones createNewGuarantor y createNewGuaranorManual, ya que tenían lógicas redundantes.
+    - Se reutilizan funciones auxiliares para evitar duplicar tareas como configurar el createGuarantorsRequest.
+2. Separación de responsabilidades:
+    - Se introdujo una función para manejar las solicitudes (handleCreateGuarantorRequest) y una para los mensajes de éxito o error (showSwalMessage).
+3. Legibilidad y comentarios:
+    - Se añadieron comentarios para que el código sea más comprensible.
+    - Se renombraron variables y funciones para reflejar mejor su propósito.
+4. Eliminación de código comentado o redundante:
+    - Se eliminó el código comentado que no se utilizaba.
+5. Buenas prácticas de Angular:
+    - Se utilizaron operadores opcionales para manejar propiedades como this.application?.id.
+    - Se mejoró el manejo de errores para proporcionar mensajes más específicos.
